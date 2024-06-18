@@ -6,7 +6,7 @@ import {
   Button,
   Navbar as FlowbiteNavbar,
 } from "flowbite-react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { RiSearchLine } from "react-icons/ri";
 
 const Navbar = () => {
@@ -20,20 +20,19 @@ const Navbar = () => {
   return (
     <FlowbiteNavbar
       fluid
-      rounded
-      className="bg-white px-2 py-[15px] border dark:border-gray-700 dark:bg-gray-800 sm:px-4 rounded"
+      className="bg-white px-2 py-[15px] border dark:border-gray-700 dark:bg-gray-800 sm:px-4"
     >
       {/* Logo and Brand */}
-      <FlowbiteNavbar.Brand href="https://flowbite-react.com">
+      <Link className="flex" to="/">
         <img
           src="https://img.freepik.com/free-vector/geometric-leaves-logo-business-template_23-2148707652.jpg?w=740&t=st=1718532568~exp=1718533168~hmac=251fd52394c242e2e2a7c3b6d85d72ed9b8ef91ad402d057bb159856ec153e5c"
           className="mr-3 h-6 sm:h-9"
           alt="Flowbite React Logo"
         />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          Flowbite React
+          React Blog
         </span>
-      </FlowbiteNavbar.Brand>
+      </Link>
       {/* Logo End */}
 
       {/* Side Navigation and Search */}
@@ -43,7 +42,7 @@ const Navbar = () => {
             <input
               type="text"
               placeholder={window.innerWidth > 768 ? "Search..." : ""}
-              className="bg-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:w-full md:w-16 sm:w-32 hidden md:flex"
+              className="bg-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:w-full md:w-16 sm:w-16 hidden md:flex"
             />
             <button
               type="submit"
@@ -106,7 +105,7 @@ const Navbar = () => {
         {/* Main Navigation Links */}
         <FlowbiteNavbar.Link as={"div"}>
           <NavLink
-            to=""
+            to="/"
             className={({ isActive }) =>
               isActive ? "text-purple-500" : "text-blue-500"
             }
@@ -154,6 +153,7 @@ const Navbar = () => {
           </div>
         )}
       </FlowbiteNavbar.Collapse>
+
       {/* Navigation Links End */}
     </FlowbiteNavbar>
   );

@@ -6,11 +6,13 @@ import Footer from "../components/Footer";
 const Layout = () => {
   return (
     <>
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-      <Footer />
+      <div className="dark:bg-gray-900">
+        <Header />
+        <main>
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 };
