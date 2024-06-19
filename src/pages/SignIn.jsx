@@ -3,6 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../store/user/userSlice";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +20,7 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -36,13 +43,16 @@ const SignIn = () => {
       const validationErrors = validateForm();
       if (Object.keys(validationErrors).length > 0) {
         setErrors(validationErrors);
+        dispatch(signInFailure(validationErrors));
         return;
       }
       setLoading(true);
+      dispatch(signInStart());
       try {
         const response = await axios.post("/api/auth/signin", formData);
 
         if (response.status === 200) {
+          dispatch(signInSuccess(response.data));
           console.log("Form submitted successfully:", response.data);
           // Handle successful form submission (e.g., redirect to another page, show a success message, etc.)
           setFormData({
@@ -55,15 +65,18 @@ const SignIn = () => {
             autoClose: 1500,
             onClose: () => navigate("/"),
           });
+        } else {
+          dispatch(signInFailure("Something went wrong"));
         }
       } catch (error) {
         console.error("Error submitting form:", error);
+        dispatch(signInFailure(error.message));
         toast.error("Failed to submit the form. Please try again.");
       } finally {
         setLoading(false);
       }
     },
-    [formData, navigate, validateForm]
+    [formData, navigate, validateForm, dispatch]
   );
 
   return (
