@@ -56,8 +56,10 @@ const SignUp = () => {
           toast.success("Registration successful!", {
             onClose: () => navigate("/login"),
           });
+        } else {
+          toast.error("Something went wrong!! PLease try again Later!");
+          console.log(response.error.message);
         }
-        
       } catch (error) {
         console.error("Error submitting form:", error);
         // setErrors({ submit: "Failed to submit the form. Please try again." });a
