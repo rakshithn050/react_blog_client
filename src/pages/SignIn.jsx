@@ -52,7 +52,7 @@ const SignIn = () => {
         const response = await axios.post("/api/auth/signin", formData);
 
         if (response.status === 200) {
-          dispatch(signInSuccess(response.data));
+          dispatch(signInSuccess(response.data.restUserInfo));
           console.log("Form submitted successfully:", response.data);
           // Handle successful form submission (e.g., redirect to another page, show a success message, etc.)
           setFormData({
