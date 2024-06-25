@@ -16,7 +16,7 @@ const Navbar = () => {
 
   useEffect(() => {
     setIsLoggedIn(!!currentUser);
-    console.log(currentUser);
+    console.log(currentUser?.username);
   }, [currentUser]);
 
   const handleSearch = (e) => {
