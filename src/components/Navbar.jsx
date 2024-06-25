@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Dropdown,
@@ -8,9 +8,16 @@ import {
 } from "flowbite-react";
 import { Link, NavLink } from "react-router-dom";
 import { RiSearchLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { currentUser } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    setIsLoggedIn(!!currentUser);
+    console.log(currentUser);
+  }, [currentUser]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -43,10 +50,11 @@ const Navbar = () => {
               type="text"
               placeholder={window.innerWidth > 768 ? "Search..." : ""}
               className="bg-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:w-full md:w-16 sm:w-16 hidden md:flex"
-            />  
+            />
             <button
               type="submit"
               className="absolute right-0 top-0 mt-2 mr-2 focus:outline-none"
+              aria-label="Search"
             >
               <RiSearchLine className="h-6 w-6 text-gray-600" />
             </button>
@@ -69,12 +77,16 @@ const Navbar = () => {
               }
             >
               <Dropdown.Header>
-                <span className="block text-sm">Bonnie Green</span>
+                <span className="block text-sm">
+                  {currentUser ? currentUser.username : ""}
+                </span>
                 <span className="block truncate text-sm font-medium">
-                  name@flowbite.com
+                  {currentUser ? currentUser.email : ""}
                 </span>
               </Dropdown.Header>
-              <Dropdown.Item>Dashboard</Dropdown.Item>
+              <Dropdown.Item>
+                <Link to={"/dashboard?tab='profile'"}>Dashboard</Link>
+              </Dropdown.Item>
               <Dropdown.Item>Settings</Dropdown.Item>
               <Dropdown.Item>Earnings</Dropdown.Item>
               <Dropdown.Divider />
