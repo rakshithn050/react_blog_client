@@ -64,7 +64,7 @@ const SignIn = () => {
           setErrors({});
           toast.success("Login successful!", {
             autoClose: 1500,
-            onClose: () => navigate("/"),
+            onClose: () => navigate("/dashboard"),
           });
         } else {
           dispatch(signInFailure("Something went wrong"));

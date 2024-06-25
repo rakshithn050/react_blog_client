@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Dashboard";
 import Layout from "./layouts/Layout";
 import PageNotFound from "./pages/PageNotFound";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -18,8 +19,10 @@ function App() {
             <Route path="about" element={<About />} />
             <Route path="login" element={<SignIn />} />
             <Route path="register" element={<SignUp />} />
-            <Route path="dashboard" element={<Dashboard />} />
             <Route path="projects" element={<Projects />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="dashboard" element={<Dashboard />} />
+            </Route>
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
