@@ -4,7 +4,7 @@ import About from "./pages/About";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
-import Projects from "./pages/Dashboard";
+import Projects from "./pages/Projects";
 import Layout from "./layouts/Layout";
 import PageNotFound from "./pages/PageNotFound";
 import PrivateRoute from "./components/PrivateRoute";

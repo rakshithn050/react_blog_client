@@ -71,7 +71,11 @@ const Navbar = () => {
               label={
                 <Avatar
                   alt="User settings"
-                  img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  img={
+                    currentUser
+                      ? currentUser.profilePicture
+                      : "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
+                  }
                   rounded
                 />
               }
