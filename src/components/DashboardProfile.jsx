@@ -7,21 +7,31 @@ import {
 import { Button, TextInput } from "flowbite-react";
 import React, { useEffect, useRef, useState } from "react";
 import { HiOutlineLogout, HiOutlineTrash } from "react-icons/hi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import app from "../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import {
+  updateFailure,
+  updateStart,
+  updateSuccess,
+} from "../store/user/userSlice";
+import axios from "axios";
 
 function DashboardProfile() {
   const { currentUser } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFilePath, setImageFilePath] = useState(null);
+  const [imageFileUploading, setImageFileUploading] =
+    useState(setImageFilePath);
   const [imageFileUploadingProgress, setImageFileUploadingProgress] =
     useState(0);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
+  const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
+  const dispatch = useDispatch();
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -42,6 +52,8 @@ function DashboardProfile() {
     const fileName = new Date().getTime() + imageFile.name;
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
+    setImageFileUploading(true);
+    setImageFileUploadError(null);
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -52,14 +64,61 @@ function DashboardProfile() {
       },
       (error) => {
         setImageFileUploadError("File Size must be less than 2MB");
+        setImageFileUploadingProgress(null);
+        setImageFile(null);
+        setImageFilePath(null);
+        setImageFileUploading(false);
         toast.error("Cannot upload this image. Please try another image.");
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageFilePath(downloadURL);
+          setFormData({ ...formData, profilePicture: downloadURL });
+          setImageFileUploading(false);
+          toast.success("Image Uploaded Successfully.");
         });
       }
     );
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Corrected preventDefault method
+
+    if (Object.keys(formData).length === 0) {
+      toast.error("Nothing to change.");
+      return;
+    }
+    if (imageFileUploading) {
+      toast.warn("Please wait for some time while image is being uploaded.");
+      setUpdateUserError("Please wait for image to upload");
+      return;
+    }
+    try {
+      dispatch(updateStart());
+      const res = await axios.put(
+        `/api/user/update-profile/${currentUser._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!res.status === 200) {
+        dispatch(updateFailure(res.data.message));
+        toast.error("Could not submit the form!! please try again later.");
+      } else {
+        dispatch(updateSuccess(res.data));
+        toast.success("Profile Updated Successfully.");
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message));
+    }
   };
 
   return (
@@ -67,7 +126,7 @@ function DashboardProfile() {
       <h1 className="my-7 text-center font-semibold text-3xl dark:text-white">
         Profile
       </h1>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           type="file"
           accept="image/*"
@@ -114,14 +173,21 @@ function DashboardProfile() {
           id="username"
           placeholder="Your username"
           defaultValue={currentUser.username}
+          onChange={handleChange}
         />
         <TextInput
           type="text"
           id="email"
           placeholder="Your email id"
           defaultValue={currentUser.email}
+          onChange={handleChange}
         />
-        <TextInput type="password" id="password" placeholder="********" />
+        <TextInput
+          type="password"
+          id="password"
+          placeholder="********"
+          onChange={handleChange}
+        />
         <Button type="Submit" gradientDuoTone="purpleToBlue" outline>
           Update Profile
         </Button>
