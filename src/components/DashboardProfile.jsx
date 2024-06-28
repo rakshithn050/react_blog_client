@@ -29,7 +29,6 @@ import {
 import axios from "axios";
 
 function DashboardProfile() {
-  const { currentUser } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFilePath, setImageFilePath] = useState(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
@@ -38,8 +37,11 @@ function DashboardProfile() {
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(false);
   const filePickerRef = useRef();
   const dispatch = useDispatch();
+
+  const { currentUser } = useSelector((state) => state.user);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -106,6 +108,8 @@ function DashboardProfile() {
     }
     try {
       dispatch(updateStart());
+      setLoading(true);
+
       const res = await axios.put(
         `/api/user/update-profile/${currentUser._id}`,
         formData,
@@ -126,6 +130,8 @@ function DashboardProfile() {
     } catch (error) {
       dispatch(updateFailure(error.message));
       toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -237,8 +243,13 @@ function DashboardProfile() {
             placeholder="********"
             onChange={handleChange}
           />
-          <Button type="Submit" gradientDuoTone="purpleToBlue" outline>
-            Update Profile
+          <Button
+            type="Submit"
+            gradientDuoTone="purpleToBlue"
+            outline
+            disabled={loading || imageFileUploading}
+          >
+            {loading || imageFileUploading ? "Updating..." : "Update Profile"}
           </Button>
         </form>
         <div className="text-red-500 cursor-pointer flex justify-between mt-5">

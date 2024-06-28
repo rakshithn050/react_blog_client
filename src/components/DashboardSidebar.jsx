@@ -2,16 +2,19 @@ import { Sidebar } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { HiUser } from "react-icons/hi";
 import { HiArrowSmallRight } from "react-icons/hi2";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { signOutSuccess } from "../store/user/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { CiSettings } from "react-icons/ci";
+import { MdOutlineSpaceDashboard } from "react-icons/md";
 
 function DashboardSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
 
   const [tab, setTab] = useState("");
 
@@ -56,6 +59,26 @@ function DashboardSidebar() {
           >
             Profile
           </Sidebar.Item>
+          {currentUser && currentUser.isAdmin && (
+            <>
+              <Sidebar.Item
+                icon={MdOutlineSpaceDashboard}
+                className="cursor-pointer"
+                active={tab === "create-post"}
+                onClick={() => handleNavigation("/create-post")}
+              >
+                Create Post
+              </Sidebar.Item>
+              <Sidebar.Item
+                icon={CiSettings}
+                className="cursor-pointer"
+                active={tab === "settings"}
+                onClick={() => handleNavigation("/settings")}
+              >
+                Settings
+              </Sidebar.Item>
+            </>
+          )}
           <Sidebar.Item
             icon={HiArrowSmallRight}
             className="cursor-pointer"

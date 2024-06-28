@@ -8,6 +8,8 @@ import Projects from "./pages/Projects";
 import Layout from "./layouts/Layout";
 import PageNotFound from "./pages/PageNotFound";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
+import CreatePost from "./pages/CreatePost";
 
 function App() {
   return (
@@ -22,6 +24,9 @@ function App() {
             <Route path="projects" element={<Projects />} />
             <Route element={<PrivateRoute />}>
               <Route path="dashboard" element={<Dashboard />} />
+            </Route>
+            <Route element={<AdminRoute />}>
+              <Route path="create-post" element={<CreatePost />} />
             </Route>
           </Route>
           <Route path="*" element={<PageNotFound />} />

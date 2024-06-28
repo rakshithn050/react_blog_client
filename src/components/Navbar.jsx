@@ -83,7 +83,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center">
-          <DarkThemeToggle />
+          <DarkThemeToggle className="mx-3" />
 
           {isLoggedIn ? (
             <Dropdown
@@ -110,12 +110,20 @@ const Navbar = () => {
                 </span>
               </Dropdown.Header>
               <Dropdown.Item>
-                <Link to={"/dashboard?tab='profile'"}>Profile</Link>
+                <Link to="/dashboard?tab=profile">Profile</Link>
               </Dropdown.Item>
-              {/* <Dropdown.Item>
-                <Link to={"/dashboard?tab='profile'"}>Dashboard</Link>
-              </Dropdown.Item> */}
-              {/* <Dropdown.Item>Settings</Dropdown.Item> */}
+
+              {currentUser && currentUser.isAdmin && (
+                <>
+                  <Dropdown.Item>
+                    <Link to="/create-post">Create Post</Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Link to="/dashboard?tab=settings">Settings</Link>
+                  </Dropdown.Item>
+                </>
+              )}
+
               <Dropdown.Divider />
               <Dropdown.Item
                 onClick={() => {
