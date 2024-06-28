@@ -78,7 +78,7 @@ const SignUp = () => {
           <div className="absolute inset-0">
             <img
               className="h-full w-full rounded-md object-cover object-top"
-              src="https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c2lnbnVwfGVufDB8fDB8fA%3D%3D&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=60"
+              src="https://cdn.pixabay.com/photo/2016/10/13/16/23/genoa-1738159_1280.jpg"
               alt=""
             />
           </div>
@@ -86,7 +86,8 @@ const SignUp = () => {
           <div className="relative">
             <div className="w-full max-w-xl">
               <h3 className="text-4xl font-bold text-white">
-                Now you don't have to rely on your designer to create a new page
+                Discover, Create, and Share Your Stories: Unleashing the Power
+                of Your Words and Ideas
               </h3>
             </div>
           </div>

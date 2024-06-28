@@ -110,10 +110,12 @@ const Navbar = () => {
                 </span>
               </Dropdown.Header>
               <Dropdown.Item>
-                <Link to={"/dashboard?tab='profile'"}>Dashboard</Link>
+                <Link to={"/dashboard?tab='profile'"}>Profile</Link>
               </Dropdown.Item>
-              <Dropdown.Item>Settings</Dropdown.Item>
-              <Dropdown.Item>Earnings</Dropdown.Item>
+              {/* <Dropdown.Item>
+                <Link to={"/dashboard?tab='profile'"}>Dashboard</Link>
+              </Dropdown.Item> */}
+              {/* <Dropdown.Item>Settings</Dropdown.Item> */}
               <Dropdown.Divider />
               <Dropdown.Item
                 onClick={() => {

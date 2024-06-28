@@ -94,7 +94,8 @@ const SignIn = () => {
           <div className="relative">
             <div className="w-full max-w-xl">
               <h3 className="text-4xl font-bold text-white">
-                Now you don't have to rely on your designer to create a new page
+                Explore, Create, and Share Your Stories: Where Writers Connect
+                and Ideas Flourish
               </h3>
             </div>
           </div>
