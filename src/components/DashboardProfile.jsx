@@ -24,6 +24,7 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailure,
+  signOutSuccess,
 } from "../store/user/userSlice";
 import axios from "axios";
 
@@ -151,6 +152,23 @@ function DashboardProfile() {
     }
   };
 
+  const handleSignOut = async () => {
+    try {
+      const res = await axios.post("/api/user/signout");
+      if (res.status !== 200) {
+        toast.error("Something went wrong!! please try again later.");
+        console.log(res.message);
+      } else {
+        toast.info("Signing out Successfully.");
+        setTimeout(() => {
+          dispatch(signOutSuccess(res.data));
+        }, 1000);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <>
       <div className="max-w-lg mx-auto p-3 w-full">
@@ -232,7 +250,12 @@ function DashboardProfile() {
           >
             <HiOutlineTrash className="mr-2" /> Delete Account
           </span>
-          <span className="flex items-center">
+          <span
+            className="flex items-center"
+            onClick={() => {
+              handleSignOut();
+            }}
+          >
             <HiOutlineLogout className="mr-2" /> Sign Out
           </span>
         </div>

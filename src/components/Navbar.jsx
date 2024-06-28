@@ -8,11 +8,15 @@ import {
 } from "flowbite-react";
 import { Link, NavLink } from "react-router-dom";
 import { RiSearchLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { signOutSuccess } from "../store/user/userSlice";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoggedIn(!!currentUser);
@@ -22,6 +26,23 @@ const Navbar = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     // Handle search functionality if needed
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const res = await axios.post("/api/user/signout");
+      if (res.status !== 200) {
+        toast.error("Something went wrong!! please try again later.");
+        console.log(res.message);
+      } else {
+        toast.info("Signing out Successfully.");
+        setTimeout(() => {
+          dispatch(signOutSuccess(res.data));
+        }, 1000);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -94,7 +115,13 @@ const Navbar = () => {
               <Dropdown.Item>Settings</Dropdown.Item>
               <Dropdown.Item>Earnings</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item>Sign out</Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  handleSignOut();
+                }}
+              >
+                Sign out
+              </Dropdown.Item>
             </Dropdown>
           ) : (
             <div className="hidden md:flex lg:flex">

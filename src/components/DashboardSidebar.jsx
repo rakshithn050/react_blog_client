@@ -3,10 +3,16 @@ import React, { useEffect, useState } from "react";
 import { HiUser } from "react-icons/hi";
 import { HiArrowSmallRight } from "react-icons/hi2";
 import { useNavigate, useLocation } from "react-router-dom";
+import { signOutSuccess } from "../store/user/userSlice";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function DashboardSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [tab, setTab] = useState("");
 
   useEffect(() => {
@@ -19,6 +25,23 @@ function DashboardSidebar() {
 
   const handleNavigation = (path) => {
     navigate(path);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const res = await axios.post("/api/user/signout");
+      if (res.status !== 200) {
+        toast.error("Something went wrong!! please try again later.");
+        console.log(res.message);
+      } else {
+        toast.info("Signing out Successfully.");
+        setTimeout(() => {
+          dispatch(signOutSuccess(res.data));
+        }, 1000);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -36,7 +59,9 @@ function DashboardSidebar() {
           <Sidebar.Item
             icon={HiArrowSmallRight}
             className="cursor-pointer"
-            onClick={() => handleNavigation("/signout")}
+            onClick={() => {
+              handleSignOut();
+            }}
           >
             SignOut
           </Sidebar.Item>
