@@ -1,6 +1,6 @@
 import { Sidebar } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { HiUser } from "react-icons/hi";
+import { HiDocumentDuplicate, HiUser } from "react-icons/hi";
 import { HiArrowSmallRight } from "react-icons/hi2";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { signOutSuccess } from "../store/user/userSlice";
@@ -23,6 +23,9 @@ function DashboardSidebar() {
     const tabFromUrl = urlParams.get("tab");
     if (tabFromUrl && tabFromUrl === "profile") {
       setTab("profile");
+    }
+    if (tabFromUrl && tabFromUrl === "posts") {
+      setTab("posts");
     }
   }, [location]);
 
@@ -58,6 +61,14 @@ function DashboardSidebar() {
             onClick={() => handleNavigation("/dashboard?tab=profile")}
           >
             Profile
+          </Sidebar.Item>
+          <Sidebar.Item
+            icon={HiDocumentDuplicate}
+            className="cursor-pointer"
+            active={tab === "posts"}
+            onClick={() => handleNavigation("/dashboard?tab=posts")}
+          >
+            Posts
           </Sidebar.Item>
           {currentUser && currentUser.isAdmin && (
             <>

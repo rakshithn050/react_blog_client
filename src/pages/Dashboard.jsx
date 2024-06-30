@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import DashboardSidebar from "../components/DashboardSidebar";
 import DashboardProfile from "../components/DashboardProfile";
 import { ToastContainer } from "react-toastify";
+import Posts from "../components/Posts";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -13,6 +14,9 @@ const Dashboard = () => {
     if (tabFromUrl && tabFromUrl === "profile") {
       setTab("profile");
     }
+    if (tabFromUrl && tabFromUrl === "posts") {
+      setTab("posts");
+    }
   }, [location]);
 
   return (
@@ -22,6 +26,7 @@ const Dashboard = () => {
         <DashboardSidebar />
       </div>
       {tab === "profile" && <DashboardProfile />}
+      {tab === "posts" && <Posts />}
     </div>
   );
 };
