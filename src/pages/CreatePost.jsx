@@ -11,24 +11,101 @@ import "react-toastify/dist/ReactToastify.css";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../firebase";
 
 function CreatePost() {
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFilePath, setImageFilePath] = useState(null);
+  const [imageFileUploading, setImageFileUploading] = useState(false);
+  const [imageFileUploadingProgress, setImageFileUploadingProgress] =
+    useState(0);
+  const [imageFileUploadError, setImageFileUploadError] = useState(null);
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "uncategorized",
+    description: "",
+    image: "",
+  });
 
-  const handleFileChange = async (event) => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
     setLoading(true);
+    setImageFile(file);
+
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + "-" + file.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress}% done`);
+        setImageFileUploadingProgress(progress.toFixed(2));
+      },
+      (error) => {
+        setImageFileUploadError("File Size must be less than 2MB");
+        setImageFileUploadingProgress(0);
+        setImageFile(null);
+        setImageFilePath(null);
+        setImageFileUploading(false);
+        setLoading(false);
+        toast.error("Cannot upload this image. Please try another image.");
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageFilePath(downloadURL);
+          setFormData({ ...formData, image: downloadURL });
+          setImageFileUploading(false);
+          setLoading(false);
+          toast.success("Image Uploaded Successfully.");
+        });
+      }
+    );
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.title || !value) {
+      toast.error("Please fill all the required fields");
+      return;
+    }
+
     try {
+      setLoading(true);
+      // Simulate a network request
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      setUploadedImage(URL.createObjectURL(file));
-      toast.success("Image uploaded successfully!");
+      toast.success("Post created successfully!");
+      // Reset form
+      setFormData({
+        title: "",
+        category: "uncategorized",
+        description: "",
+        image: "",
+      });
+      setValue("");
+      setImageFile(null);
+      setImageFilePath(null);
+      setImageFileUploadingProgress(0);
     } catch (error) {
-      console.error("Error uploading file:", error);
-      toast.error("Failed to upload the image. Please try again.");
+      console.error("Error creating post:", error);
+      toast.error("Failed to create the post. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -40,7 +117,7 @@ function CreatePost() {
       <h1 className="text-center text-3xl my-7 font-semibold dark:text-white">
         Create a Post
       </h1>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
@@ -48,8 +125,14 @@ function CreatePost() {
             required
             id="title"
             className="flex-1"
+            value={formData.title}
+            onChange={handleChange}
           />
-          <Select>
+          <Select
+            id="category"
+            value={formData.category}
+            onChange={handleChange}
+          >
             <option value="uncategorized">Select a Category</option>
             <option value="js">Javascript</option>
             <option value="python">Python</option>
@@ -62,14 +145,14 @@ function CreatePost() {
             htmlFor="dropzone-file"
             className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
           >
-            <div className="flex flex-col items-center justify-center pb-6 pt-5">
+            <div className="flex flex-col items-center justify-center pb-6 pt-5 h-full w-full">
               {loading ? (
                 <Spinner size="lg" />
-              ) : uploadedImage ? (
+              ) : imageFilePath ? (
                 <img
-                  src={uploadedImage}
+                  src={imageFilePath}
                   alt="Uploaded"
-                  className="h-32 w-32 object-cover"
+                  className="w-full h-full object-cover"
                 />
               ) : (
                 <>
@@ -103,6 +186,7 @@ function CreatePost() {
               className="hidden"
               accept="image/*"
               onChange={handleFileChange}
+              disabled={loading || imageFileUploading}
             />
           </Label>
         </div>
