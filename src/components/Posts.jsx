@@ -1,37 +1,54 @@
 import axios from "axios";
-import { Badge, Table } from "flowbite-react";
+import { Badge, Table, Spinner } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 import { MdOutlineEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Pagination from "./Pagination"; // Adjust the import path as necessary
 
 function Posts() {
   const { currentUser } = useSelector((state) => state.user);
 
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await axios.get(
-          `/api/post/getPosts?userID=${currentUser._id}`
-        );
-        if (res.status === 200) {
-          setPosts(res.data.posts);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    if (currentUser.isAdmin) {
-      fetchPosts();
-    }
+    fetchPosts(1); // Fetch initial page of posts when component mounts
   }, [currentUser._id]);
+
+  const fetchPosts = async (page) => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `/api/post/getPosts?userID=${currentUser._id}&page=${page}&perPage=10`
+      );
+      if (res.status === 200) {
+        const { posts: fetchedPosts, totalPages: fetchedTotalPages } = res.data;
+        setPosts(fetchedPosts);
+        setTotalPages(fetchedTotalPages);
+        setCurrentPage(page);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePageChange = (page) => {
+    fetchPosts(page);
+  };
 
   return (
     <div className="table-auto md:w-full m-10 overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-      {currentUser.isAdmin && posts.length > 0 ? (
+      {loading ? (
+        <div className="flex justify-center items-center h-full">
+          <Spinner size="lg" />
+        </div>
+      ) : currentUser.isAdmin && posts.length > 0 ? (
         <>
           <Table hoverable className="shadow-md">
             <Table.Head>
@@ -82,9 +99,16 @@ function Posts() {
               ))}
             </Table.Body>
           </Table>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </>
       ) : (
-        <p>There are no posts</p>
+        <p className="dark:text-white h-full w-full flex items-center justify-center font-bold text-xl">
+          There are no posts
+        </p>
       )}
     </div>
   );
