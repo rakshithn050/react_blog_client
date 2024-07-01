@@ -116,7 +116,7 @@ const Navbar = () => {
               {currentUser && currentUser.isAdmin && (
                 <>
                   <Dropdown.Item>
-                    <Link to="/create-post">Create Post</Link>
+                    <Link to="/createPost">Create Post</Link>
                   </Dropdown.Item>
                   <Dropdown.Item>
                     <Link to="/dashboard?tab=settings">Settings</Link>

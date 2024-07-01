@@ -26,7 +26,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard />} />
             </Route>
             <Route element={<AdminRoute />}>
-              <Route path="create-post" element={<CreatePost />} />
+              <Route path="createPost" element={<CreatePost />} />
             </Route>
           </Route>
           <Route path="*" element={<PageNotFound />} />

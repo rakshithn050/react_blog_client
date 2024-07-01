@@ -76,8 +76,8 @@ function DashboardSidebar() {
               <Sidebar.Item
                 icon={MdOutlineSpaceDashboard}
                 className="cursor-pointer"
-                active={tab === "create-post"}
-                onClick={() => handleNavigation("/create-post")}
+                active={tab === "createPost"}
+                onClick={() => handleNavigation("/createPost")}
               >
                 Create Post
               </Sidebar.Item>

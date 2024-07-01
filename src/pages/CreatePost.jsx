@@ -92,7 +92,7 @@ function CreatePost() {
 
     try {
       setLoading(true);
-      const res = await axios.post("/api/post/create-post", formData);
+      const res = await axios.post("/api/post/createPost", formData);
       if (res.status === 201) {
         toast.success("Post created successfully!");
         setFormData({
