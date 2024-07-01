@@ -27,7 +27,7 @@ function OAuthButton() {
         dispatch(signInSuccess(response.data.restUserInfo));
         toast.success("Login successful!", {
           autoClose: 1500,
-          onClose: () => navigate("/dashboard"),
+          onClose: () => navigate("/dashboard?tab=profile"),
         });
       }
     } catch (error) {

@@ -57,21 +57,22 @@ function DashboardSidebar() {
           <Sidebar.Item
             icon={HiUser}
             className="cursor-pointer"
+            label={currentUser.isAdmin ? "Admin" : `User`}
             active={tab === "profile"}
             onClick={() => handleNavigation("/dashboard?tab=profile")}
           >
             Profile
           </Sidebar.Item>
-          <Sidebar.Item
-            icon={HiDocumentDuplicate}
-            className="cursor-pointer"
-            active={tab === "posts"}
-            onClick={() => handleNavigation("/dashboard?tab=posts")}
-          >
-            Posts
-          </Sidebar.Item>
           {currentUser && currentUser.isAdmin && (
             <>
+              <Sidebar.Item
+                icon={HiDocumentDuplicate}
+                className="cursor-pointer"
+                active={tab === "posts"}
+                onClick={() => handleNavigation("/dashboard?tab=posts")}
+              >
+                Posts
+              </Sidebar.Item>
               <Sidebar.Item
                 icon={MdOutlineSpaceDashboard}
                 className="cursor-pointer"
