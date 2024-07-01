@@ -122,7 +122,7 @@ function Posts() {
                     </Table.Cell>
                     <Table.Cell className="py-4 px-6">
                       <Link
-                        to={`/update-post/${post._id}`}
+                        to={`/updatePost/${post._id}`}
                         className="flex items-center text-blue-500"
                       >
                         <MdOutlineEdit className="mr-2" /> Edit

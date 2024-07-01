@@ -10,6 +10,7 @@ import PageNotFound from "./pages/PageNotFound";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
 import CreatePost from "./pages/CreatePost";
+import UpdatePost from "./pages/UpdatePost";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             </Route>
             <Route element={<AdminRoute />}>
               <Route path="createPost" element={<CreatePost />} />
+              <Route path="updatePost/:postID" element={<UpdatePost />} />
             </Route>
           </Route>
           <Route path="*" element={<PageNotFound />} />
