@@ -13,6 +13,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Pagination from "./Pagination"; // Adjust the import path as necessary
+import { toast } from "react-toastify";
 
 function Users() {
   const { currentUser } = useSelector((state) => state.user);
@@ -52,10 +53,9 @@ function Users() {
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
-      const res = await axios.delete(
-        `/api/user/deleteUser/${deleteUser}/${currentUser._id}`
-      );
+      const res = await axios.delete(`/api/user/delete-profile/${deleteUser}`);
       if (res.status === 200) {
+        toast.info("User deleted successfully");
         setUsers((prev) => prev.filter((user) => user._id !== deleteUser));
         if (users.length === 1 && currentPage > 1) {
           fetchUsers(currentPage - 1);
@@ -63,9 +63,13 @@ function Users() {
           fetchUsers(currentPage);
         }
       } else {
+        toast.error("Couldn't delete the user");
+
         console.log(res);
       }
     } catch (error) {
+      toast.error("Couldn't delete the user");
+
       console.log(error);
     }
   };

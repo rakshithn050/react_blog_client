@@ -6,6 +6,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Pagination from "./Pagination"; // Adjust the import path as necessary
+import { toast } from "react-toastify";
 
 function Posts() {
   const { currentUser } = useSelector((state) => state.user);
@@ -25,7 +26,7 @@ function Posts() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `/api/post/getPosts?userID=${currentUser._id}&page=${page}&perPage=10`
+        `/api/post/getPosts?page=${page}&perPage=10`
       );
       if (res.status === 200) {
         const { posts: fetchedPosts, totalPages: fetchedTotalPages } = res.data;
@@ -51,6 +52,7 @@ function Posts() {
         `/api/post/deletePost/${deletePost}/${currentUser._id}`
       );
       if (res.status === 200) {
+        toast.info("Post deleted successfully");
         setPosts((prev) => prev.filter((post) => post._id !== deletePost));
         if (posts.length === 1 && currentPage > 1) {
           fetchPosts(currentPage - 1);
@@ -58,9 +60,11 @@ function Posts() {
           fetchPosts(currentPage);
         }
       } else {
+        toast.error("Couldn't delete the post");
         console.log(res);
       }
     } catch (error) {
+      toast.error("Couldn't delete the post");
       console.log(error);
     }
   };

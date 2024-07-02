@@ -1,0 +1,91 @@
+.postContent p {
+  @apply border-l-4 border-gray-500 dark:border-gray-400 pl-4 mb-6 italic rounded pb-6 dark:text-gray-300;
+}
+
+.postContent a {
+  @apply text-blue-600 no-underline italic dark:text-blue-400;
+}
+
+.postContent a:hover {
+  @apply text-purple-600 underline italic dark:text-purple-400;
+}
+
+/* Headers */
+.postContent h1 {
+  @apply text-4xl font-bold mb-4 dark:text-gray-200;
+}
+
+.postContent h2 {
+  @apply text-3xl font-semibold mb-4 dark:text-gray-200;
+}
+
+.postContent h3 {
+  @apply text-2xl font-semibold mb-4 dark:text-gray-200;
+}
+
+.postContent h4 {
+  @apply text-xl font-semibold mb-4 dark:text-gray-200;
+}
+
+.postContent h5 {
+  @apply text-lg font-semibold mb-4 dark:text-gray-200;
+}
+
+.postContent h6 {
+  @apply text-base font-semibold mb-4 dark:text-gray-200;
+}
+
+/* Lists */
+.postContent ul {
+  @apply list-disc pl-6 mb-6 dark:text-gray-300;
+}
+
+.postContent ol {
+  @apply list-decimal pl-6 mb-6 dark:text-gray-300;
+}
+
+.postContent li {
+  @apply mb-2 dark:text-gray-300;
+}
+
+/* Blockquotes */
+.postContent blockquote {
+  @apply border-l-4 border-gray-500 dark:border-gray-400 pl-4 mb-6 italic rounded bg-gray-100 dark:bg-gray-800 dark:text-gray-300;
+}
+
+/* Code blocks */
+.postContent pre {
+  @apply bg-gray-800 text-white p-4 rounded mb-6 overflow-x-auto dark:bg-gray-900;
+}
+
+.postContent code {
+  @apply bg-gray-200 dark:bg-gray-700 text-red-600 dark:text-red-400 px-1 rounded;
+}
+
+/* Images */
+.postContent img {
+  @apply max-w-full h-auto rounded mb-6 dark:border-gray-600;
+}
+
+/* Tables */
+.postContent table {
+  @apply w-full mb-6 border-collapse dark:text-gray-300;
+}
+
+.postContent th,
+.postContent td {
+  @apply border border-gray-300 dark:border-gray-600 p-2;
+}
+
+.postContent th {
+  @apply bg-gray-100 dark:bg-gray-700 font-semibold;
+}
+
+.postContent td {
+  @apply bg-white dark:bg-gray-800;
+}
+
+/* Horizontal Rule */
+.postContent hr {
+  @apply border-t border-gray-300 dark:border-gray-600 my-6;
+}

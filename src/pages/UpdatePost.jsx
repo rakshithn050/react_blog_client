@@ -46,7 +46,7 @@ function UpdatePost() {
     const getPost = async () => {
       try {
         const res = await axios.get(
-          `/api/post/getPosts?userID=${currentUser._id}&postId=${postID}`
+          `/api/post/getPosts?postId=${postID}`
         );
         if (res.status === 200) {
           const data = res.data.posts[0];
@@ -136,7 +136,7 @@ function UpdatePost() {
         setImageFilePath(null);
         setImageFileUploadingProgress(0);
         setTimeout(() => {
-          navigate(`/post/${res.data.slug}`);
+          navigate(`/post/${res.data.post.slug}`);
         }, 1000);
       }
     } catch (error) {
