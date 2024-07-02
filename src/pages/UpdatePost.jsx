@@ -22,6 +22,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import DashboardSidebar from "../components/DashboardSidebar";
 import { useSelector } from "react-redux";
+// import Banner from "../components/Banner";
 
 function UpdatePost() {
   const [loading, setLoading] = useState(false);
@@ -123,7 +124,7 @@ function UpdatePost() {
         `/api/post/updatePost/${postID}/${currentUser._id}`,
         formData
       );
-      if (res.status === 201) {
+      if (res.status === 200) {
         toast.success("Post updated successfully!");
         setFormData({
           title: "",
@@ -153,6 +154,8 @@ function UpdatePost() {
         <DashboardSidebar />
       </div>
       <div className="mx-auto min-h-screen w-full px-32 mb-10">
+        {/* Card */}
+        {/* <Banner /> */}
         <h1 className="text-center text-3xl my-7 font-semibold dark:text-white">
           Update Post
         </h1>

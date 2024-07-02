@@ -1,6 +1,6 @@
 import { Sidebar } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { HiDocumentDuplicate, HiUser } from "react-icons/hi";
+import { HiDocumentDuplicate, HiUser, HiUsers } from "react-icons/hi";
 import { HiArrowSmallRight } from "react-icons/hi2";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { signOutSuccess } from "../store/user/userSlice";
@@ -26,6 +26,9 @@ function DashboardSidebar() {
     }
     if (tabFromUrl && tabFromUrl === "posts") {
       setTab("posts");
+    }
+    if (tabFromUrl && tabFromUrl === "users") {
+      setTab("users");
     }
   }, [location]);
 
@@ -80,6 +83,14 @@ function DashboardSidebar() {
                 onClick={() => handleNavigation("/createPost")}
               >
                 Create Post
+              </Sidebar.Item>
+              <Sidebar.Item
+                icon={HiUsers}
+                className="cursor-pointer"
+                active={tab === "users"}
+                onClick={() => handleNavigation("/dashboard?tab=users")}
+              >
+                Users
               </Sidebar.Item>
               <Sidebar.Item
                 icon={CiSettings}
