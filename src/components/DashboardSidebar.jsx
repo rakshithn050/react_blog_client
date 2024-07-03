@@ -60,7 +60,7 @@ function DashboardSidebar() {
           <Sidebar.Item
             icon={HiUser}
             className="cursor-pointer"
-            label={currentUser.isAdmin ? "Admin" : `User`}
+            label={currentUser?.isAdmin ? "Admin" : `User`}
             active={tab === "profile"}
             onClick={() => handleNavigation("/dashboard?tab=profile")}
           >

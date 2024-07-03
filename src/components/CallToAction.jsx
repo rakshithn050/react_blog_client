@@ -2,7 +2,7 @@ import React from "react";
 
 function CallToAction() {
   return (
-    <section className="bg-white dark:bg-gray-900 border rounded-xl">
+    <section className="bg-white dark:bg-gray-900 border rounded-xl p-5 my-5">
       <div className="px-2 lg:flex lg:flex-row lg:items-center">
         <div className="w-full lg:w-1/2">
           <div className="my-10 lg:my-0 lg:px-10">

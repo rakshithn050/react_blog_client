@@ -6,6 +6,8 @@ import DashboardSidebar from "../components/DashboardSidebar";
 import { VscTag } from "react-icons/vsc";
 import "../assets/postDescription.css";
 import CallToAction from "../components/CallToAction";
+import CommentSection from "../components/CommentSection";
+import { ToastContainer } from "react-toastify";
 
 function Post() {
   const { postSlug } = useParams();
@@ -44,6 +46,7 @@ function Post() {
         </div>
       ) : (
         <div className="flex flex-col md:flex-row">
+          <ToastContainer />
           <div className="md:w-56 mb-8 md:mb-0">
             <DashboardSidebar />
           </div>
@@ -81,6 +84,7 @@ function Post() {
               ></div>
             </div>
             <CallToAction />
+            <CommentSection postID={post?._id} />
           </div>
         </div>
       )}
