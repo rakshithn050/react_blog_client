@@ -1,0 +1,24 @@
+/* Comment.css */
+@keyframes like-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-like {
+  animation: like-animation 0.3s ease-in-out;
+}
+
+.icon-liked {
+  fill: blue; /* Change this to your desired color */
+}
+
+.icon-unliked {
+  fill: gray; /* Change this to your desired color */
+}
