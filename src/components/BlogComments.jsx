@@ -5,17 +5,19 @@ function BlogComments({
   blogComments = [],
   updateCommentLikes,
   deleteComment,
+  editCommentContent,
 }) {
   return (
     <>
       {blogComments.length > 0 ? (
-        blogComments.map((comment, index) => {
+        blogComments.map((comment) => {
           return (
             <Comment
               comment={comment}
-              key={index}
+              key={comment._id} // Use a unique key
               updateCommentLikes={updateCommentLikes}
               deleteComment={deleteComment}
+              editCommentContent={editCommentContent}
             />
           );
         })

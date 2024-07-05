@@ -62,6 +62,16 @@ function CommentSection({ postID }) {
     );
   };
 
+  const editCommentContent = (editedComment) => {
+    setBlogComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment._id === editedComment._id
+          ? { ...comment, comment: editedComment.comment }
+          : comment
+      )
+    );
+  };
+
   useEffect(() => {
     getComments();
   }, [postID]);
@@ -140,6 +150,7 @@ function CommentSection({ postID }) {
                 blogComments={blogComments}
                 updateCommentLikes={updateCommentLikes}
                 deleteComment={deleteComment}
+                editCommentContent={editCommentContent}
               />
             </div>
           </section>

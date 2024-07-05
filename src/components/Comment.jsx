@@ -5,13 +5,21 @@ import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import "../assets/Comment.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Button, Textarea } from "flowbite-react";
 
-function Comment({ comment = {}, updateCommentLikes, deleteComment }) {
+function Comment({
+  comment = {},
+  updateCommentLikes,
+  deleteComment,
+  editCommentContent,
+}) {
   const [user, setUser] = useState({});
   const [liked, setLiked] = useState(false);
   const [deleteCommentAction, setDeleteCommentAction] = useState(false);
   const [likeAnimate, setLikeAnimate] = useState(false);
   const [deleteAnimate, setDeleteAnimate] = useState(false);
+  const [editComment, setEditComment] = useState(false);
+  const [editedComment, setEditedComment] = useState(comment.comment);
 
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -44,6 +52,25 @@ function Comment({ comment = {}, updateCommentLikes, deleteComment }) {
           setTimeout(() => setLikeAnimate(false), 300);
           updateCommentLikes(res.data);
         }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEditClick = async (commentID) => {
+    setEditComment(true);
+    setEditedComment(comment.comment);
+  };
+
+  const handleUpdateComment = async () => {
+    try {
+      const res = await axios.put(`/api/comment/editComment/${comment._id}`, {
+        description: editedComment,
+      });
+      if (res.status === 200) {
+        setEditComment(false);
+        editCommentContent(res.data); // Pass the updated comment data
       }
     } catch (error) {
       console.log(error);
@@ -92,15 +119,59 @@ function Comment({ comment = {}, updateCommentLikes, deleteComment }) {
           </p>
         </div>
       </footer>
-      <p className="text-gray-500 dark:text-gray-400">{comment?.comment}</p>
+      {editComment ? (
+        <>
+          <Textarea
+            className="mb-2"
+            value={editedComment}
+            onChange={(e) => {
+              setEditedComment(e.target.value);
+            }}
+          />
+          <div className="flex justify-end gap-2 text-xs">
+            <Button
+              type="button"
+              size="sm"
+              gradientDuoTone="purpleToBlue"
+              onClick={() => {
+                handleUpdateComment();
+              }}
+            >
+              Save
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              gradientDuoTone="purpleToBlue"
+              onClick={() => {
+                setEditComment(false);
+              }}
+              outline
+            >
+              Cancel
+            </Button>
+          </div>
+        </>
+      ) : (
+        <p className="text-gray-500 dark:text-gray-400">{comment?.comment}</p>
+      )}
       <div className="flex items-center mt-4 space-x-4">
-        <button
-          type="button"
-          className="flex items-center space-x-1 text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium"
-        >
-          <MdOutlineEdit className="w-4 h-4" />
-          <span>Edit</span>
-        </button>
+        {(currentUser && currentUser?._id === comment.userID) ||
+        currentUser?.isAdmin ? (
+          <button
+            type="button"
+            className="flex items-center space-x-1 text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium"
+            onClick={() => {
+              handleEditClick(comment._id);
+            }}
+          >
+            <MdOutlineEdit className="w-4 h-4" />
+            <span>Edit</span>
+          </button>
+        ) : (
+          ""
+        )}
+
         <button
           type="button"
           className={`flex items-center text-sm font-medium ${
