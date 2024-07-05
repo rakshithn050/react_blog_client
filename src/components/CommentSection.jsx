@@ -48,6 +48,20 @@ function CommentSection({ postID }) {
     setBlogComments((prevComments) => [newComment, ...prevComments]);
   };
 
+  const updateCommentLikes = (updatedComment) => {
+    setBlogComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment._id === updatedComment._id ? updatedComment : comment
+      )
+    );
+  };
+
+  const deleteComment = (deletedComment) => {
+    setBlogComments((prevComments) =>
+      prevComments.filter((comment) => comment._id !== deletedComment._id)
+    );
+  };
+
   useEffect(() => {
     getComments();
   }, [postID]);
@@ -122,7 +136,11 @@ function CommentSection({ postID }) {
                   Comments ({blogComments.length})
                 </h2>
               </div>
-              <BlogComments blogComments={blogComments} />
+              <BlogComments
+                blogComments={blogComments}
+                updateCommentLikes={updateCommentLikes}
+                deleteComment={deleteComment}
+              />
             </div>
           </section>
         </>

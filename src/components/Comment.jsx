@@ -3,9 +3,18 @@ import React, { useEffect, useState } from "react";
 import { GoThumbsup } from "react-icons/go";
 import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import "../assets/Comment.css";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-function Comment({ comment = {} }) {
+function Comment({ comment = {}, updateCommentLikes, deleteComment }) {
   const [user, setUser] = useState({});
+  const [liked, setLiked] = useState(false);
+  const [deleteCommentAction, setDeleteCommentAction] = useState(false);
+  const [likeAnimate, setLikeAnimate] = useState(false);
+  const [deleteAnimate, setDeleteAnimate] = useState(false);
+
+  const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -22,13 +31,43 @@ function Comment({ comment = {} }) {
     }
   }, [comment]);
 
-  const [liked, setLiked] = useState(false);
-  const [animate, setAnimate] = useState(false);
+  const handleLikeClick = async (commentID) => {
+    try {
+      if (!currentUser) {
+        navigate("/login");
+        return;
+      } else {
+        const res = await axios.put(`/api/comment/likeComment/${commentID}`);
+        if (res.status === 200) {
+          setLiked(!liked);
+          setLikeAnimate(true);
+          setTimeout(() => setLikeAnimate(false), 300);
+          updateCommentLikes(res.data);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const handleLikeClick = () => {
-    setLiked(!liked);
-    setAnimate(true);
-    setTimeout(() => setAnimate(false), 300); // Reset animation state after 300ms
+  const handleDeleteClick = async (commentID) => {
+    try {
+      if (!currentUser) {
+        navigate("/login");
+        return;
+      } else {
+        // Uncomment the following lines to enable actual delete functionality
+        // const res = await axios.delete(`/api/comment/deleteComment/${commentID}`);
+        // if (res.status === 200) {
+        setDeleteCommentAction(!deleteCommentAction);
+        setDeleteAnimate(true);
+        setTimeout(() => setDeleteAnimate(false), 300);
+        //   deleteComment(res.data);
+        // }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -66,21 +105,42 @@ function Comment({ comment = {} }) {
           type="button"
           className={`flex items-center text-sm font-medium ${
             liked ? "text-blue-500" : "text-gray-500"
-          } ${animate ? "animate-like" : ""}`}
-          onClick={handleLikeClick}
+          } ${likeAnimate ? "animate-like" : ""}`}
+          onClick={() => {
+            handleLikeClick(comment._id);
+          }}
         >
           <GoThumbsup
-            className={`w-4 h-4 ${liked ? "icon-liked" : "icon-unliked"}`}
+            className={`w-4 h-4 ${
+              comment.likes.includes(currentUser._id) || liked
+                ? "icon-liked"
+                : "icon-unliked"
+            }`}
           />
-          <span>Like</span>
+          <span>
+            {comment?.numberOfLikes > 0 ? comment?.numberOfLikes : "Like"}
+          </span>
         </button>
-        <button
-          type="button"
-          className="flex items-center space-x-1 text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium"
-        >
-          <MdDeleteOutline className="w-4 h-4" />
-          <span>Delete</span>
-        </button>
+        {currentUser?.isAdmin ? (
+          <button
+            type="button"
+            className={`flex items-center text-sm font-medium ${
+              deleteCommentAction ? "text-red-500" : "text-gray-500"
+            } ${deleteAnimate ? "animate-delete" : ""}`}
+            onClick={() => {
+              handleDeleteClick(comment._id);
+            }}
+          >
+            <MdDeleteOutline
+              className={`w-4 h-4 ${
+                deleteCommentAction ? "icon-deleted" : "icon-default"
+              }`}
+            />
+            <span>Delete</span>
+          </button>
+        ) : (
+          ""
+        )}
       </div>
     </article>
   );

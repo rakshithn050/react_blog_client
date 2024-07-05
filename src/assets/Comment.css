@@ -11,8 +11,24 @@
   }
 }
 
+@keyframes delete-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .animate-like {
   animation: like-animation 0.3s ease-in-out;
+}
+
+.animate-delete {
+  animation: delete-animation 0.3s ease-in-out;
 }
 
 .icon-liked {
@@ -20,5 +36,13 @@
 }
 
 .icon-unliked {
+  fill: gray; /* Change this to your desired color */
+}
+
+.icon-deleted {
+  fill: red; /* Change this to your desired color */
+}
+
+.icon-default {
   fill: gray; /* Change this to your desired color */
 }
