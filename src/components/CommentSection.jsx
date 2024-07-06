@@ -5,11 +5,13 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { Button } from "flowbite-react";
 import BlogComments from "./BlogComments";
+import RecentArticles from "./RecentArticles";
 
 function CommentSection({ postID }) {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [blogComments, setBlogComments] = useState([]);
+  const [recentArticles, setRecentArticles] = useState([]);
   const [remainingChars, setRemainingChars] = useState(200);
   const { postSlug } = useParams();
 
@@ -83,9 +85,24 @@ function CommentSection({ postID }) {
     }
   };
 
+  const getRecentArticles = async () => {
+    try {
+      const res = await axios.get(`/api/post/getPosts?page=1&perPage=3`);
+      if (res.status === 200) {
+        setRecentArticles(res.data.posts);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getComments();
   }, [postID]);
+
+  useEffect(() => {
+    getRecentArticles();
+  }, []);
 
   return (
     <div className="w-full px-3 my-5">
@@ -152,6 +169,12 @@ function CommentSection({ postID }) {
                 deleteComment={deleteComment}
                 editCommentContent={editCommentContent}
               />
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
+                  Recent Articles
+                </h2>
+              </div>
+              <RecentArticles articles={recentArticles} />
             </div>
           </section>
         </>
