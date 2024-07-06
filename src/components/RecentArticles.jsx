@@ -30,12 +30,12 @@ function RecentArticles({ articles = [] }) {
                   />
                   <a
                     className="flex justify-center items-center bg-red-700 bg-opacity-80 z-10 absolute top-0 left-0 w-full h-full text-white rounded-2xl opacity-0 transition-all duration-300 transform group-hover:scale-105 text-xl group-hover:opacity-100"
-                    href="/blog/slug"
+                    href={`/post/${article.slug}`}
                     target="_self"
                     rel="noopener noreferrer"
                   >
                     <span className="mr-2 dark:text-white">Read article</span>
-                    <MdOutlineKeyboardDoubleArrowRight className="mt-1"/>
+                    <MdOutlineKeyboardDoubleArrowRight className="mt-1" />
                   </a>
                 </div>
                 {/* <div className="flex justify-between items-center w-full pb-4 mb-auto">
@@ -80,8 +80,8 @@ function RecentArticles({ articles = [] }) {
                 </div> */}
                 <h3 className="font-medium text-xl leading-8">
                   <a
-                    href="/blog/slug"
-                    className="block relative group-hover:text-red-700 transition-colors duration-200 dark:text-white" 
+                    href={`/post/${article.slug}`}
+                    className="block relative group-hover:text-red-700 transition-colors duration-200 dark:text-white"
                   >
                     Instant Help at Your Fingertips
                   </a>

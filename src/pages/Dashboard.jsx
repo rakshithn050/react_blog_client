@@ -5,6 +5,7 @@ import DashboardProfile from "../components/DashboardProfile";
 import { ToastContainer } from "react-toastify";
 import Posts from "../components/Posts";
 import Users from "../components/Users";
+import UserComments from "../components/UserComments";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -13,7 +14,7 @@ const Dashboard = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get("tab");
-    const allowedTabs = ["profile", "posts", "users"];
+    const allowedTabs = ["profile", "posts", "users", "comments"];
 
     if (tabFromUrl && allowedTabs.includes(tabFromUrl)) {
       setTab(tabFromUrl);
@@ -32,6 +33,7 @@ const Dashboard = () => {
         {tab === "profile" && <DashboardProfile />}
         {tab === "posts" && <Posts />}
         {tab === "users" && <Users />}
+        {tab === "comments" && <UserComments />}
         {tab === "PageNotFound" && (
           <p className="w-full h-screen flex justify-center items-center">
             Could not find the page!! Check the url once again

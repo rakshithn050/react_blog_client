@@ -9,6 +9,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { CiSettings } from "react-icons/ci";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { BiMessageDetail } from "react-icons/bi";
 
 function DashboardSidebar() {
   const location = useLocation();
@@ -29,6 +30,9 @@ function DashboardSidebar() {
     }
     if (tabFromUrl && tabFromUrl === "users") {
       setTab("users");
+    }
+    if (tabFromUrl && tabFromUrl === "comments") {
+      setTab("comments");
     }
   }, [location]);
 
@@ -91,6 +95,14 @@ function DashboardSidebar() {
                 onClick={() => handleNavigation("/dashboard?tab=users")}
               >
                 Users
+              </Sidebar.Item>
+              <Sidebar.Item
+                icon={BiMessageDetail}
+                className="cursor-pointer"
+                active={tab === "comments"}
+                onClick={() => handleNavigation("/dashboard?tab=comments")}
+              >
+                Comments
               </Sidebar.Item>
               <Sidebar.Item
                 icon={CiSettings}
