@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -58,7 +58,7 @@ function CommentSection({ postID }) {
 
   const deleteComment = (deletedComment) => {
     setBlogComments((prevComments) =>
-      prevComments.filter((comment) => comment._id !== deletedComment._id)
+      prevComments.filter((comment) => comment._id !== deletedComment)
     );
   };
 
@@ -72,10 +72,6 @@ function CommentSection({ postID }) {
     );
   };
 
-  useEffect(() => {
-    getComments();
-  }, [postID]);
-
   const getComments = async () => {
     try {
       const res = await axios.get(`/api/comment/getPostComments/${postID}`);
@@ -86,6 +82,10 @@ function CommentSection({ postID }) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    getComments();
+  }, [postID]);
 
   return (
     <div className="w-full px-3 my-5">

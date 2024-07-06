@@ -1,4 +1,3 @@
-/* Comment.css */
 @keyframes like-animation {
   0% {
     transform: scale(1);
@@ -32,17 +31,17 @@
 }
 
 .icon-liked {
-  fill: blue; /* Change this to your desired color */
+  fill: blue;
 }
 
 .icon-unliked {
-  fill: gray; /* Change this to your desired color */
+  fill: gray;
 }
 
 .icon-deleted {
-  fill: red; /* Change this to your desired color */
+  fill: red;
 }
 
 .icon-default {
-  fill: gray; /* Change this to your desired color */
+  fill: gray;
 }
