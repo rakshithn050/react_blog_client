@@ -101,13 +101,11 @@ function Users() {
                       {new Date(user.updatedAt).toLocaleDateString()}
                     </Table.Cell>
                     <Table.Cell className="py-4 px-6">
-                      <Link to={`/user/${user.slug}`}>
-                        <img
-                          src={user.profilePicture}
-                          alt="Profile Image"
-                          className="w-10 h-10 object-cover rounded-full bg-gray-500"
-                        />
-                      </Link>
+                      <img
+                        src={user.profilePicture}
+                        alt="Profile Image"
+                        className="w-10 h-10 object-cover rounded-full bg-gray-500"
+                      />
                     </Table.Cell>
                     <Table.Cell className="py-4 px-6">
                       <span>{user.username}</span>

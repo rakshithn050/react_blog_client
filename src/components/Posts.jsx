@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Pagination from "./Pagination"; // Adjust the import path as necessary
 import { toast } from "react-toastify";
+import { FaEye } from "react-icons/fa";
 
 function Posts() {
   const { currentUser } = useSelector((state) => state.user);
@@ -19,15 +20,13 @@ function Posts() {
   const [deletePost, setDeletePost] = useState("");
 
   useEffect(() => {
-    fetchPosts(1); // Fetch initial page of posts when component mounts
+    fetchPosts(1);
   }, [currentUser._id]);
 
   const fetchPosts = async (page) => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        `/api/post/getPosts?page=${page}&perPage=10`
-      );
+      const res = await axios.get(`/api/post/getPosts?page=${page}&perPage=10`);
       if (res.status === 200) {
         const { posts: fetchedPosts, totalPages: fetchedTotalPages } = res.data;
         setPosts(fetchedPosts);
@@ -76,7 +75,7 @@ function Posts() {
           <div className="flex justify-center items-center flex-1">
             <Spinner size="lg" />
           </div>
-        ) : currentUser.isAdmin && posts.length > 0 ? (
+        ) : posts.length > 0 ? (
           <div className="flex-1">
             <Table hoverable className="shadow-sm">
               <Table.Head>
@@ -84,10 +83,15 @@ function Posts() {
                 <Table.HeadCell>Post Image</Table.HeadCell>
                 <Table.HeadCell>Post Title</Table.HeadCell>
                 <Table.HeadCell>Category</Table.HeadCell>
-                <Table.HeadCell>Delete</Table.HeadCell>
-                <Table.HeadCell>
-                  <span>Edit</span>
-                </Table.HeadCell>
+                <Table.HeadCell>View Post</Table.HeadCell>
+                {currentUser.isAdmin && (
+                  <>
+                    <Table.HeadCell>Delete</Table.HeadCell>
+                    <Table.HeadCell>
+                      <span>Edit</span>
+                    </Table.HeadCell>
+                  </>
+                )}
               </Table.Head>
               <Table.Body className="divide-y divide-gray-200">
                 {posts.map((post) => (
@@ -114,24 +118,36 @@ function Posts() {
                       <Badge color="info">{post.category}</Badge>
                     </Table.Cell>
                     <Table.Cell className="py-4 px-6">
-                      <span
-                        className="flex items-center text-red-500 cursor-pointer"
-                        onClick={() => {
-                          setShowModal(true);
-                          setDeletePost(post._id);
-                        }}
-                      >
-                        <HiOutlineTrash className="mr-2" /> Delete
-                      </span>
-                    </Table.Cell>
-                    <Table.Cell className="py-4 px-6">
                       <Link
-                        to={`/updatePost/${post._id}`}
+                        to={`/post/${post.slug}`}
                         className="flex items-center text-blue-500"
                       >
-                        <MdOutlineEdit className="mr-2" /> Edit
+                        <FaEye className="mr-2" /> View Post
                       </Link>
                     </Table.Cell>
+                    {currentUser.isAdmin && (
+                      <>
+                        <Table.Cell className="py-4 px-6">
+                          <span
+                            className="flex items-center text-red-500 cursor-pointer"
+                            onClick={() => {
+                              setShowModal(true);
+                              setDeletePost(post._id);
+                            }}
+                          >
+                            <HiOutlineTrash className="mr-2" /> Delete
+                          </span>
+                        </Table.Cell>
+                        <Table.Cell className="py-4 px-6">
+                          <Link
+                            to={`/updatePost/${post._id}`}
+                            className="flex items-center text-blue-500"
+                          >
+                            <MdOutlineEdit className="mr-2" /> Edit
+                          </Link>
+                        </Table.Cell>
+                      </>
+                    )}
                   </Table.Row>
                 ))}
               </Table.Body>
@@ -142,7 +158,7 @@ function Posts() {
             There are no posts
           </p>
         )}
-        {currentUser.isAdmin && posts.length > 0 && (
+        {posts.length > 0 && (
           <div className="self-end mb-5 mr-5">
             <Pagination
               currentPage={currentPage}

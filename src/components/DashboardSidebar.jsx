@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { CiSettings } from "react-icons/ci";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { BiMessageDetail } from "react-icons/bi";
+import { FaChartBar } from "react-icons/fa";
 
 function DashboardSidebar() {
   const location = useLocation();
@@ -22,6 +23,9 @@ function DashboardSidebar() {
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get("tab");
+    if (tabFromUrl && tabFromUrl === "stats") {
+      setTab("stats");
+    }
     if (tabFromUrl && tabFromUrl === "profile") {
       setTab("profile");
     }
@@ -70,15 +74,23 @@ function DashboardSidebar() {
           >
             Profile
           </Sidebar.Item>
+          <Sidebar.Item
+            icon={HiDocumentDuplicate}
+            className="cursor-pointer"
+            active={tab === "posts"}
+            onClick={() => handleNavigation("/dashboard?tab=posts")}
+          >
+            Posts
+          </Sidebar.Item>
           {currentUser && currentUser.isAdmin && (
             <>
               <Sidebar.Item
-                icon={HiDocumentDuplicate}
+                icon={FaChartBar}
                 className="cursor-pointer"
-                active={tab === "posts"}
-                onClick={() => handleNavigation("/dashboard?tab=posts")}
+                active={tab === "stats"}
+                onClick={() => handleNavigation("/dashboard?tab=stats")}
               >
-                Posts
+                Dashboard
               </Sidebar.Item>
               <Sidebar.Item
                 icon={MdOutlineSpaceDashboard}
@@ -103,14 +115,6 @@ function DashboardSidebar() {
                 onClick={() => handleNavigation("/dashboard?tab=comments")}
               >
                 Comments
-              </Sidebar.Item>
-              <Sidebar.Item
-                icon={CiSettings}
-                className="cursor-pointer"
-                active={tab === "settings"}
-                onClick={() => handleNavigation("/settings")}
-              >
-                Settings
               </Sidebar.Item>
             </>
           )}
