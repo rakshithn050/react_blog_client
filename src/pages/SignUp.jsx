@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OAuthButton from "../components/OAuthButton";
 
@@ -72,7 +72,6 @@ const SignUp = () => {
 
   return (
     <section className="m-4 lg:m-20">
-      <ToastContainer />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="relative flex items-end px-4 pb-10 pt-60 sm:px-6 sm:pb-16 md:justify-center lg:px-8 lg:pb-24">
           <div className="absolute inset-0">

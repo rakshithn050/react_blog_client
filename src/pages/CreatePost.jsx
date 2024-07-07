@@ -6,7 +6,7 @@ import {
   Select,
   TextInput,
 } from "flowbite-react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
@@ -118,7 +118,6 @@ function CreatePost() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      <ToastContainer />
       <div className="md:w-56">
         <DashboardSidebar />
       </div>

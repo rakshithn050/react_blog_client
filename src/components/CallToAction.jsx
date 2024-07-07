@@ -1,3 +1,4 @@
+import { Button } from "flowbite-react";
 import React from "react";
 
 function CallToAction() {
@@ -15,12 +16,13 @@ function CallToAction() {
               and stories in the blogging world.
             </p>
             <div className="mt-8 max-w-xl">
-              <button
+              <Button
                 type="button"
-                className="rounded-md bg-black px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus-visible:outline-gray-800"
+                size="md"
+                gradientDuoTone="purpleToBlue"
               >
                 Get Started
-              </button>
+              </Button>
             </div>
           </div>
         </div>

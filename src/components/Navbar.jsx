@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showInput, setShowInput] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -69,11 +70,14 @@ const Navbar = () => {
           <form onSubmit={handleSearch} className="relative">
             <input
               type="text"
-              placeholder={window.innerWidth > 768 ? "Search..." : ""}
-              className="bg-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:w-full md:w-16 sm:w-16 hidden md:flex"
+              placeholder="Search..."
+              className={`bg-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:w-full md:w-16 sm:w-16 transition-opacity duration-500 ${
+                showInput ? "opacity-100" : "opacity-0 hidden md:flex"
+              }`}
             />
             <button
-              type="submit"
+              type="button"
+              onClick={() => setShowInput(!showInput)}
               className="absolute right-0 top-0 mt-2 mr-2 focus:outline-none"
               aria-label="Search"
             >
@@ -161,9 +165,15 @@ const Navbar = () => {
             to="/"
             className={({ isActive }) =>
               isActive
-                ? "text-purple-900 dark:text-blue-500"
+                ? "text-purple-900 dark:text-blue-500 font-bold"
                 : "text-blue-500 dark:text-white"
             }
+            style={({ isActive }) => ({
+              padding: "5px 10px",
+              borderRadius: "5px",
+              transition: "background-color 0.3s",
+              backgroundColor: isActive ? "rgba(0, 0, 0, 0.1)" : "transparent",
+            })}
           >
             Home
           </NavLink>
@@ -174,9 +184,15 @@ const Navbar = () => {
             to="about"
             className={({ isActive }) =>
               isActive
-                ? "text-purple-900 dark:text-blue-500"
+                ? "text-purple-900 dark:text-blue-500 font-bold"
                 : "text-blue-500 dark:text-white"
             }
+            style={({ isActive }) => ({
+              padding: "5px 10px",
+              borderRadius: "5px",
+              transition: "background-color 0.3s",
+              backgroundColor: isActive ? "rgba(0, 0, 0, 0.1)" : "transparent",
+            })}
           >
             About
           </NavLink>
@@ -187,9 +203,15 @@ const Navbar = () => {
             to="projects"
             className={({ isActive }) =>
               isActive
-                ? "text-purple-900 dark:text-blue-500"
+                ? "text-purple-900 dark:text-blue-500 font-bold"
                 : "text-blue-500 dark:text-white"
             }
+            style={({ isActive }) => ({
+              padding: "5px 10px",
+              borderRadius: "5px",
+              transition: "background-color 0.3s",
+              backgroundColor: isActive ? "rgba(0, 0, 0, 0.1)" : "transparent",
+            })}
           >
             Projects
           </NavLink>

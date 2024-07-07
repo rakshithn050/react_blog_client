@@ -6,7 +6,7 @@ import {
   Select,
   TextInput,
 } from "flowbite-react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
@@ -45,9 +45,7 @@ function UpdatePost() {
   useEffect(() => {
     const getPost = async () => {
       try {
-        const res = await axios.get(
-          `/api/post/getPosts?postId=${postID}`
-        );
+        const res = await axios.get(`/api/post/getPosts?postId=${postID}`);
         if (res.status === 200) {
           const data = res.data.posts[0];
           setFormData(data);
@@ -149,7 +147,6 @@ function UpdatePost() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      <ToastContainer />
       <div className="md:w-56">
         <DashboardSidebar />
       </div>
