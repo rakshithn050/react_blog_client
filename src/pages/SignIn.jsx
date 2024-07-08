@@ -10,6 +10,8 @@ import {
   signInFailure,
 } from "../store/user/userSlice";
 import OAuthButton from "../components/OAuthButton";
+import { Button } from "flowbite-react";
+import { IoIosArrowRoundForward } from "react-icons/io";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -169,30 +171,17 @@ const SignIn = () => {
                   </div>
                 </div>
                 <div>
-                  <button
+                  <Button
                     type="submit"
-                    className="inline-flex w-full items-center justify-center rounded-md bg-black dark:bg-gray-800 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80 dark:hover:bg-gray-700"
-                    disabled={loading}
+                    outline
+                    gradientDuoTone="purpleToBlue"
+                    className="w-full flex items-center justify-center gap-2"
                   >
-                    {loading ? "Logging..." : "Login"}
+                    {loading ? <span>Logging...</span> : <span>Login</span>}
                     {!loading && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="ml-2"
-                      >
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                      </svg>
+                      <IoIosArrowRoundForward className="w-6 h-6" /> // Increased icon size
                     )}
-                  </button>
+                  </Button>
                   {errors.submit && (
                     <p className="text-red-500 text-sm mt-1">{errors.submit}</p>
                   )}

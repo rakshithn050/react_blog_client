@@ -6,7 +6,7 @@ import {
   Button,
   Navbar as FlowbiteNavbar,
 } from "flowbite-react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { RiSearchLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../store/user/userSlice";
@@ -15,36 +15,62 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showInput, setShowInput] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoggedIn(!!currentUser);
-    console.log(currentUser?.username);
   }, [currentUser]);
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [location.search]);
+
+  // Handle search form submission
   const handleSearch = (e) => {
     e.preventDefault();
-    // Handle search functionality if needed
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("searchTerm", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
   };
 
+  // Handle sign out action
   const handleSignOut = async () => {
     try {
       const res = await axios.post("/api/user/signout");
       if (res.status !== 200) {
-        toast.error("Something went wrong!! please try again later.");
-        console.log(res.message);
+        toast.error("Something went wrong!! Please try again later.");
       } else {
-        toast.info("Signing out Successfully.");
+        toast.info("Signing out successfully.");
         setTimeout(() => {
           dispatch(signOutSuccess(res.data));
         }, 1000);
       }
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
+
+  // Conditional navigation to search page based on URL search params
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromURL = urlParams.get("searchTerm");
+    const currentPath = location.pathname;
+    const searchPath = "/search";
+
+    if (searchTermFromURL && currentPath !== searchPath) {
+      const searchQuery = urlParams.toString();
+      navigate(`${searchPath}?${searchQuery}`);
+    }
+  }, [location, navigate]);
 
   return (
     <FlowbiteNavbar
@@ -56,9 +82,9 @@ const Navbar = () => {
         <img
           src="https://img.freepik.com/free-vector/geometric-leaves-logo-business-template_23-2148707652.jpg?w=740&t=st=1718532568~exp=1718533168~hmac=251fd52394c242e2e2a7c3b6d85d72ed9b8ef91ad402d057bb159856ec153e5c"
           className="mr-3 h-6 sm:h-9"
-          alt="Flowbite React Logo"
+          alt="Logo"
         />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white hidden sm:block">
           React Blog
         </span>
       </Link>
@@ -71,13 +97,12 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="Search..."
-              className={`bg-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:w-full md:w-16 sm:w-16 transition-opacity duration-500 ${
-                showInput ? "opacity-100" : "opacity-0 hidden md:flex"
-              }`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={`bg-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:w-full md:w-16 sm:w-full `}
             />
             <button
-              type="button"
-              onClick={() => setShowInput(!showInput)}
+              type="submit"
               className="absolute right-0 top-0 mt-2 mr-2 focus:outline-none"
               aria-label="Search"
             >
@@ -116,7 +141,6 @@ const Navbar = () => {
               <Dropdown.Item>
                 <Link to="/dashboard?tab=profile">Profile</Link>
               </Dropdown.Item>
-
               {currentUser && currentUser.isAdmin && (
                 <>
                   <Dropdown.Item>
@@ -127,24 +151,17 @@ const Navbar = () => {
                   </Dropdown.Item>
                 </>
               )}
-
               <Dropdown.Divider />
-              <Dropdown.Item
-                onClick={() => {
-                  handleSignOut();
-                }}
-              >
-                Sign out
-              </Dropdown.Item>
+              <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
             </Dropdown>
           ) : (
-            <div className="hidden md:flex lg:flex">
+            <div className="hidden md:flex lg:flex flex-col md:flex-row">
               <NavLink to="/login" className="mx-2">
                 <Button gradientMonochrome="info" className="w-full">
                   Sign In
                 </Button>
               </NavLink>
-              <NavLink to="/register" className="mx-2">
+              <NavLink to="/register" className="mx-2 mt-2 md:mt-0">
                 <Button gradientMonochrome="success" className="w-full">
                   Sign Up
                 </Button>
@@ -165,15 +182,9 @@ const Navbar = () => {
             to="/"
             className={({ isActive }) =>
               isActive
-                ? "text-purple-900 dark:text-blue-500 font-bold"
+                ? "text-purple-900 dark:text-blue-500"
                 : "text-blue-500 dark:text-white"
             }
-            style={({ isActive }) => ({
-              padding: "5px 10px",
-              borderRadius: "5px",
-              transition: "background-color 0.3s",
-              backgroundColor: isActive ? "rgba(0, 0, 0, 0.1)" : "transparent",
-            })}
           >
             Home
           </NavLink>
@@ -184,15 +195,9 @@ const Navbar = () => {
             to="about"
             className={({ isActive }) =>
               isActive
-                ? "text-purple-900 dark:text-blue-500 font-bold"
+                ? "text-purple-900 dark:text-blue-500"
                 : "text-blue-500 dark:text-white"
             }
-            style={({ isActive }) => ({
-              padding: "5px 10px",
-              borderRadius: "5px",
-              transition: "background-color 0.3s",
-              backgroundColor: isActive ? "rgba(0, 0, 0, 0.1)" : "transparent",
-            })}
           >
             About
           </NavLink>
@@ -200,20 +205,14 @@ const Navbar = () => {
 
         <FlowbiteNavbar.Link as={"div"}>
           <NavLink
-            to="projects"
+            to="contact"
             className={({ isActive }) =>
               isActive
-                ? "text-purple-900 dark:text-blue-500 font-bold"
+                ? "text-purple-900 dark:text-blue-500"
                 : "text-blue-500 dark:text-white"
             }
-            style={({ isActive }) => ({
-              padding: "5px 10px",
-              borderRadius: "5px",
-              transition: "background-color 0.3s",
-              backgroundColor: isActive ? "rgba(0, 0, 0, 0.1)" : "transparent",
-            })}
           >
-            Projects
+            Contact
           </NavLink>
         </FlowbiteNavbar.Link>
 

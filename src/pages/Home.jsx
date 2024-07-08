@@ -37,7 +37,7 @@ const Home = () => {
               <img
                 src="https://img.freepik.com/free-vector/geometric-leaves-logo-business-template_23-2148707652.jpg?w=740&t=st=1718532568~exp=1718533168~hmac=251fd52394c242e2e2a7c3b6d85d72ed9b8ef91ad402d057bb159856ec153e5c"
                 className="h-9"
-                alt="Flowbite React Logo"
+                alt="Logo"
               />
             </div>
             <div className="text-center">
@@ -51,8 +51,8 @@ const Home = () => {
                 seasoned reader or new to this application, there's something
                 here for everyone.
               </p>
-              <div className="mt-10 flex flex-col sm:flex-row justify-center gap-x-2 gap-y-2">
-                <Link to={"/register"}>
+              <div className="mt-10 flex flex-col items-center sm:flex-row sm:justify-center sm:gap-x-2 sm:gap-y-2">
+                <Link to={"/register"} className="mb-2 sm:mb-0">
                   <Button
                     type="button"
                     size="md"

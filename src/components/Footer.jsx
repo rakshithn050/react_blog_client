@@ -11,7 +11,7 @@ const Footer = () => {
               <img
                 src="https://img.freepik.com/free-vector/geometric-leaves-logo-business-template_23-2148707652.jpg?w=740&t=st=1718532568~exp=1718533168~hmac=251fd52394c242e2e2a7c3b6d85d72ed9b8ef91ad402d057bb159856ec153e5c"
                 className="mr-3 h-6 sm:h-9"
-                alt="Flowbite React Logo"
+                alt="Logo"
               />
               <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
                 React Blog

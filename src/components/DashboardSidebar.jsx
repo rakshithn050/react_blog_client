@@ -65,15 +65,17 @@ function DashboardSidebar() {
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
-          <Sidebar.Item
-            icon={HiUser}
-            className="cursor-pointer"
-            label={currentUser?.isAdmin ? "Admin" : `User`}
-            active={tab === "profile"}
-            onClick={() => handleNavigation("/dashboard?tab=profile")}
-          >
-            Profile
-          </Sidebar.Item>
+          {currentUser && (
+            <Sidebar.Item
+              icon={HiUser}
+              className="cursor-pointer"
+              label={currentUser?.isAdmin ? "Admin" : `User`}
+              active={tab === "profile"}
+              onClick={() => handleNavigation("/dashboard?tab=profile")}
+            >
+              Profile
+            </Sidebar.Item>
+          )}
           <Sidebar.Item
             icon={HiDocumentDuplicate}
             className="cursor-pointer"
@@ -118,15 +120,17 @@ function DashboardSidebar() {
               </Sidebar.Item>
             </>
           )}
-          <Sidebar.Item
-            icon={HiArrowSmallRight}
-            className="cursor-pointer"
-            onClick={() => {
-              handleSignOut();
-            }}
-          >
-            SignOut
-          </Sidebar.Item>
+          {currentUser && (
+            <Sidebar.Item
+              icon={HiArrowSmallRight}
+              className="cursor-pointer"
+              onClick={() => {
+                handleSignOut();
+              }}
+            >
+              SignOut
+            </Sidebar.Item>
+          )}
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>

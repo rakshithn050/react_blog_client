@@ -83,7 +83,7 @@ function RecentArticles({ articles = [] }) {
                     href={`/post/${article.slug}`}
                     className="block relative group-hover:text-red-700 transition-colors duration-200 dark:text-white"
                   >
-                    Instant Help at Your Fingertips
+                    {article.title}
                   </a>
                 </h3>
                 <div className="flex flex-wrap gap-2 mt-2">
